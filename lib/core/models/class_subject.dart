@@ -1,21 +1,42 @@
-import 'package:isar/isar.dart';
+import 'package:hive/hive.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 import 'class_duration.dart';
 
 part 'class_subject.g.dart';
 
-@Collection()
+@HiveType(typeId: 3)
+@JsonSerializable()
 class ClassSubject {
-  Id id = Isar.autoIncrement;
+  ClassSubject({
+    required this.className,
+    required this.classroom,
+    required this.professor,
+    required this.classDuration,
+    this.classStatusInt,
+    required this.classSubjects,
+  });
 
+  factory ClassSubject.fromJson(Map<String, dynamic> json) =>
+      _$ClassSubjectFromJson(json);
+  @HiveField(0)
+  @JsonKey(name: 'ClassName')
   late String className;
+  @HiveField(1)
+  @JsonKey(name: 'Classroom')
   late String classroom;
+  @HiveField(2)
+  @JsonKey(name: 'Professor')
   late String professor;
+  @HiveField(3)
+  @JsonKey(name: 'ClassDuration')
   late ClassDuration classDuration;
-  @Enumerated(EnumType.ordinal32)
+  @HiveField(4)
+  @JsonKey(name: 'ClassStatusInt')
   ClassStatus? classStatusInt;
-
-  final IsarLinks<ClassSubject> subClasses = IsarLinks<ClassSubject>();
+  @HiveField(5)
+  @JsonKey(name: 'SubClasses')
+  List<ClassSubject>? classSubjects;
 }
 
 enum ClassStatus {

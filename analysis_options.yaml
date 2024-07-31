@@ -38,7 +38,7 @@ linter:
     - always_put_control_body_on_new_line
     # - always_put_required_named_parameters_first # we prefer having parameters in the same order as fields https://github.com/flutter/flutter/issues/10219
     - always_specify_types
-    # - always_use_package_imports # we do this commonly
+    - always_use_package_imports # we do this commonly
     - annotate_overrides
     - annotate_redeclares
     # - avoid_annotating_with_dynamic # conflicts with always_specify_types
@@ -83,7 +83,7 @@ linter:
     - camel_case_extensions
     - camel_case_types
     - cancel_subscriptions
-    # - cascade_invocations # doesn't match the typical style of this repo
+    - cascade_invocations # doesn't match the typical style of this repo
     - cast_nullable_to_non_nullable
     # - close_sinks # not reliable enough
     - collection_methods_unrelated_type
@@ -180,7 +180,7 @@ linter:
     - prefer_mixin
     # - prefer_null_aware_method_calls # "call()" is confusing to people new to the language since it's not documented anywhere
     - prefer_null_aware_operators
-    - prefer_relative_imports
+    # - prefer_relative_imports
     - prefer_single_quotes
     - prefer_spread_collections
     - prefer_typing_uninitialized_variables

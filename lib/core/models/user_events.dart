@@ -1,12 +1,13 @@
-import 'package:isar/isar.dart';
+import 'package:hive/hive.dart';
 
 part 'user_events.g.dart';
 
-@Collection()
+@HiveType(typeId: 5)
 class UserEvents {
-  Id id = Isar.autoIncrement;
-
+  @HiveField(0)
   late String title;
+  @HiveField(1)
   late String description;
+  @HiveField(2)
   late DateTime date;
 }

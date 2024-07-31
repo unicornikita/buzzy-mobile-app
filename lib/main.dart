@@ -1,9 +1,25 @@
+import 'package:buzzy_mobile/core/models/class_duration.dart';
+import 'package:buzzy_mobile/core/models/class_subject.dart';
+import 'package:buzzy_mobile/core/models/daily_schedule.dart';
+import 'package:buzzy_mobile/core/models/user_events.dart';
+import 'package:buzzy_mobile/core/models/weekly_schedule.dart';
+import 'package:buzzy_mobile/features/home/presentation/home_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
-import 'features/home/presentation/home_screen.dart';
-
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+  Hive
+    ..registerAdapter(WeeklyScheduleAdapter())
+    ..registerAdapter(DailyScheduleAdapter())
+    ..registerAdapter(ClassSubjectAdapter())
+    ..registerAdapter(ClassDurationAdapter())
+    ..registerAdapter(UserEventsAdapter());
+  await Hive.openBox<WeeklySchedule>('weeklyScheduleBox');
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -13,6 +29,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: [
+        Locale('en'), // English
+        Locale('es'), // Spanish
+      ],
       home: HomeScreen(),
     );
   }

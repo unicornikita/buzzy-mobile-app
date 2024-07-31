@@ -1,13 +1,22 @@
-import 'package:isar/isar.dart';
-
-import 'class_subject.dart';
+import 'package:buzzy_mobile/core/models/class_subject.dart';
+import 'package:hive/hive.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 part 'daily_schedule.g.dart';
 
-@Collection()
+@JsonSerializable()
+@HiveType(typeId: 2)
 class DailySchedule {
-  Id id = Isar.autoIncrement;
-
+  DailySchedule({
+    required this.dayOfTheWeek,
+    required this.classSubjects,
+  });
+  factory DailySchedule.fromJson(Map<String, dynamic> json) =>
+      _$DailyScheduleFromJson(json);
+  @HiveField(0)
+  @JsonKey(name: 'DayOfTheWeek')
   late String dayOfTheWeek;
-  final IsarLinks<ClassSubject> classSubjects = IsarLinks<ClassSubject>();
+  @HiveField(1)
+  @JsonKey(name: 'DailySchedule')
+  final List<ClassSubject> classSubjects;
 }

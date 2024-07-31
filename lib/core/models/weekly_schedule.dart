@@ -1,14 +1,22 @@
-import 'package:isar/isar.dart';
-
-import 'daily_schedule.dart';
+import 'package:buzzy_mobile/core/models/daily_schedule.dart';
+import 'package:hive/hive.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 part 'weekly_schedule.g.dart';
 
-@Collection()
+@HiveType(typeId: 1)
+@JsonSerializable()
 class WeeklySchedule {
-  Id id = Isar.autoIncrement;
+  WeeklySchedule({
+    required this.dailySchedules,
+  });
 
-  final IsarLinks<DailySchedule> dailySchedules = IsarLinks<DailySchedule>();
+  factory WeeklySchedule.fromJson(Map<String, dynamic> json) =>
+      _$WeeklyScheduleFromJson(json);
+
+  @HiveField(0)
+  @JsonKey(name: 'WeeklySchedule')
+  List<DailySchedule>? dailySchedules;
 
   String error() {
     return 'unable to get the schedule';
