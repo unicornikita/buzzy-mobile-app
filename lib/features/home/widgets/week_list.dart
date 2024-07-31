@@ -6,27 +6,29 @@ class WeekList extends StatelessWidget {
   const WeekList({super.key});
 
   List<Map<String, String>> _generateWeekDays() {
-    final now = DateTime.now();
+    final DateTime now = DateTime.now();
     final DateFormat dayFormat =
         DateFormat.E('sl_SI'); // Short name for the day in Slovenian
-    final List<Map<String, String>> days = [];
+    final List<Map<String, String>> days = <Map<String, String>>[];
 
     // Generate the list of weekdays, starting from today and including next 14 days to account for weekends
     for (int i = 0; i < 14; i++) {
-      final date = now.add(Duration(days: i));
-      final dayName = dayFormat.format(date).toUpperCase().replaceAll(
+      final DateTime date = now.add(Duration(days: i));
+      final String dayName = dayFormat.format(date).toUpperCase().replaceAll(
           '.', ''); //remove the dot at the end of the shortened day name
-      final dayDate = DateFormat('d').format(date); // Day of the month
-      days.add({'name': dayName, 'date': dayDate});
+      final String dayDate = DateFormat('d').format(date); // Day of the month
+      days.add(<String, String>{'name': dayName, 'date': dayDate});
     }
 
     // Filter out Saturday and Sunday
-    final filteredDays = days
-        .where((day) => day['name'] != 'SOB' && day['name'] != 'NED')
+    final List<Map<String, String>> filteredDays = days
+        .where((Map<String, String> day) =>
+            day['name'] != 'SOB' && day['name'] != 'NED')
         .toList();
 
     // Ensure we get the first 10 weekdays starting from today
-    final orderedDays = filteredDays.take(10).toList();
+    final List<Map<String, String>> orderedDays =
+        filteredDays.take(10).toList();
 
     return orderedDays;
   }
