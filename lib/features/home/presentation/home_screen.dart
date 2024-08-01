@@ -37,8 +37,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             children: <Widget>[
               WeekList(),
               ClassList(
-                dailySchedule: data!.dailySchedules![DateTime.now().weekday],
+                dailySchedule:
+                    data!.dailySchedules![DateTime.now().weekday - 1],
               ),
+              Expanded(
+                  child: TextButton(
+                      onPressed: () {},
+                      child: const Text(
+                        'View all',
+                        style: TextStyle(color: Colors.black),
+                      ))),
             ],
           ),
         ),

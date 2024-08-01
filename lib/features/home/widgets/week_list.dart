@@ -41,7 +41,7 @@ class WeekList extends StatelessWidget {
       height: MediaQuery.sizeOf(context).height * 0.1,
       width: MediaQuery.sizeOf(context).width,
       decoration: BoxDecoration(
-        color: ThemeData.light().primaryColor,
+        color: Theme.of(context).colorScheme.secondary,
         borderRadius: BorderRadius.circular(8.0),
       ),
       padding: const EdgeInsets.all(8),
@@ -50,9 +50,13 @@ class WeekList extends StatelessWidget {
         itemCount: daysOfWeek.length,
         scrollDirection: Axis.horizontal,
         itemBuilder: (BuildContext context, int index) {
+          final isFirst = index == 0;
           final Map<String, String> day = daysOfWeek[index];
           return WeekDay(
             day: day,
+            widgetColor: isFirst
+                ? Theme.of(context).colorScheme.primary
+                : Theme.of(context).scaffoldBackgroundColor,
             onTap: () {
               // Do something when a day is tapped
             },

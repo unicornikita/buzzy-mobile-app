@@ -1,3 +1,4 @@
+import 'package:buzzy_mobile/core/constants/ui_colors.dart';
 import 'package:buzzy_mobile/core/models/class_duration.dart';
 import 'package:buzzy_mobile/core/models/class_subject.dart';
 import 'package:buzzy_mobile/core/models/daily_schedule.dart';
@@ -28,13 +29,13 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      localizationsDelegates: [
+    return MaterialApp(
+      theme: lightTheme,
+      localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
       ],
-      supportedLocales: [
+      supportedLocales: const <Locale>[
         Locale('en'), // English
         Locale('es'), // Spanish
       ],
