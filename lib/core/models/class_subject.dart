@@ -5,7 +5,7 @@ import 'class_duration.dart';
 
 part 'class_subject.g.dart';
 
-@HiveType(typeId: 3)
+@HiveType(typeId: 2)
 @JsonSerializable()
 class ClassSubject {
   ClassSubject({
@@ -39,12 +39,25 @@ class ClassSubject {
   List<ClassSubject>? classSubjects;
 }
 
+@HiveType(typeId: 5)
 enum ClassStatus {
+  @JsonValue(0)
+  @HiveField(0)
   nadomescanje,
+  @HiveField(1)
+  @JsonValue(1)
   zaposlitev,
+  @HiveField(2)
+  @JsonValue(2)
   odpadlaUra,
+  @HiveField(3)
+  @JsonValue(3)
   vecSkupin,
+  @HiveField(4)
+  @JsonValue(4)
   dogodek,
+  @HiveField(5)
+  @JsonValue(5)
   pocitnice
 }
 

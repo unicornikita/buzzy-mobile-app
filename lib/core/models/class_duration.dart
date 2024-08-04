@@ -3,7 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'class_duration.g.dart';
 
-@HiveType(typeId: 4)
+@HiveType(typeId: 3)
 @JsonSerializable()
 class ClassDuration {
   ClassDuration({

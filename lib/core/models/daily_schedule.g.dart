@@ -8,7 +8,7 @@ part of 'daily_schedule.dart';
 
 class DailyScheduleAdapter extends TypeAdapter<DailySchedule> {
   @override
-  final int typeId = 2;
+  final int typeId = 1;
 
   @override
   DailySchedule read(BinaryReader reader) {

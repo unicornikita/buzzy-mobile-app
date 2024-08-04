@@ -4,6 +4,7 @@ import 'package:buzzy_mobile/core/services/api/api_service.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_smart_retry/dio_smart_retry.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'shared_providers.g.dart';
 
@@ -40,6 +41,15 @@ Future<WeeklySchedule?> weeklySchedule(
   final WeeklyScheduleRepository weeklyScheduleRepository =
       ref.watch(weeklyScheduleRepositoryProvider);
 
+  // if the weekly schedule has been fetched today, do not fetch it again
+  final sharedPrefs = await SharedPreferences.getInstance();
+  final String currentDate = DateTime.now().toString();
+  final String? lastFetchDate = sharedPrefs.getString('lastFetchDate');
+  // if today's date is different from the last fetch date, clear cache and fetch again
+  if (currentDate != lastFetchDate) {
+    await sharedPrefs.setString('lastFetchDate', currentDate);
+    await weeklyScheduleRepository.deleteWeeklySchedule();
+  }
   // attempt to fetch the weekly schedule from the local database
   WeeklySchedule? weeklySchedule =
       await weeklyScheduleRepository.getWeeklySchedule();

@@ -5,7 +5,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'daily_schedule.g.dart';
 
 @JsonSerializable()
-@HiveType(typeId: 2)
+@HiveType(typeId: 1)
 class DailySchedule {
   DailySchedule({
     required this.dayOfTheWeek,

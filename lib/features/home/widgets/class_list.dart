@@ -15,20 +15,30 @@ class ClassList extends ConsumerStatefulWidget {
 class _ClassListState extends ConsumerState<ClassList> {
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.8,
+    return Expanded(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Expanded(
-              child: ListView.builder(
-                  itemCount: widget.dailySchedule.classSubjects.length,
-                  itemBuilder: (context, index) {
-                    return ClassTile(
-                      classSubject: widget.dailySchedule.classSubjects[index],
-                    );
-                  }))
+              child: ListView.separated(
+            itemCount: widget.dailySchedule.classSubjects.length,
+            itemBuilder: (BuildContext context, int index) {
+              final bool isNextClass = DateTime.now()
+                  .add(
+                    const Duration(minutes: 60),
+                  )
+                  .isAfter(widget.dailySchedule.classSubjects[index]
+                      .classDuration.endTime);
+              return ClassTile(
+                isNextClass: isNextClass,
+                classSubject: widget.dailySchedule.classSubjects[index],
+              );
+            },
+            separatorBuilder: (BuildContext context, int index) {
+              return const SizedBox(height: 16);
+            },
+          ))
         ],
       ),
     );

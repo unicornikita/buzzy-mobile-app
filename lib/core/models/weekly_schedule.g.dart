@@ -8,7 +8,7 @@ part of 'weekly_schedule.dart';
 
 class WeeklyScheduleAdapter extends TypeAdapter<WeeklySchedule> {
   @override
-  final int typeId = 1;
+  final int typeId = 0;
 
   @override
   WeeklySchedule read(BinaryReader reader) {

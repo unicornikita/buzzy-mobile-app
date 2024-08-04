@@ -1,35 +1,47 @@
 import 'package:buzzy_mobile/core/models/class_subject.dart';
+import 'package:buzzy_mobile/shared/utils/utils.dart';
 import 'package:flutter/material.dart';
 
 class ClassTile extends StatelessWidget {
-  const ClassTile({super.key, required this.classSubject});
+  const ClassTile(
+      {super.key, required this.classSubject, required this.isNextClass});
+  final bool isNextClass;
 
   final ClassSubject classSubject;
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text(
-          '${classSubject.className} class name',
-          style: const TextStyle(color: Colors.black),
-        ),
-        Text(
-          '${classSubject.classroom} class room',
-          style: const TextStyle(color: Colors.black),
-        ),
-        Text(
-          '${classSubject.classDuration.startTime} - ${classSubject.classDuration.endTime}',
-          style: const TextStyle(color: Colors.black),
-        ),
-        Text(
-          '${classSubject.classStatusInt} status',
-          style: const TextStyle(color: Colors.black),
-        ),
-        Text(
-          '${classSubject.classSubjects?[0].className} subclasses',
-          style: const TextStyle(color: Colors.black),
-        ),
-      ],
+    final textColor =
+        isNextClass ? Colors.black : Theme.of(context).disabledColor;
+    final containerColor = isNextClass
+        ? Theme.of(context).primaryColor
+        : Theme.of(context).hintColor;
+    final ThemeData theme = Theme.of(context);
+    return Container(
+      padding: const EdgeInsets.all(16.0),
+      decoration: BoxDecoration(
+        color: theme.scaffoldBackgroundColor,
+        border: Border.all(color: containerColor),
+        borderRadius: BorderRadius.circular(8.0),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            '${formatDate(classSubject.classDuration.startTime)} - ${formatDate(classSubject.classDuration.endTime)}',
+            style: theme.textTheme.bodyMedium?.copyWith(color: textColor),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            classSubject.className,
+            style: theme.textTheme.titleMedium?.copyWith(color: textColor),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            '${classSubject.professor}, ${classSubject.classroom}',
+            style: theme.textTheme.bodyMedium?.copyWith(color: textColor),
+          ),
+        ],
+      ),
     );
   }
 }

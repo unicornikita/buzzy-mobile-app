@@ -36,34 +36,35 @@ class WeekList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<Map<String, String>> daysOfWeek = _generateWeekDays();
-
+    final theme = Theme.of(context);
     return Container(
-      height: MediaQuery.sizeOf(context).height * 0.1,
+      height: MediaQuery.sizeOf(context).height * 0.13,
       width: MediaQuery.sizeOf(context).width,
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.secondary,
         borderRadius: BorderRadius.circular(8.0),
       ),
-      padding: const EdgeInsets.all(8),
+      padding: const EdgeInsets.all(16.0),
       child: ListView.separated(
         padding: EdgeInsets.zero,
         itemCount: daysOfWeek.length,
         scrollDirection: Axis.horizontal,
         itemBuilder: (BuildContext context, int index) {
-          final isFirst = index == 0;
+          final isSelected = index == 0;
           final Map<String, String> day = daysOfWeek[index];
           return WeekDay(
             day: day,
-            widgetColor: isFirst
-                ? Theme.of(context).colorScheme.primary
-                : Theme.of(context).scaffoldBackgroundColor,
+            widgetColor: isSelected
+                ? theme.colorScheme.primary
+                : theme.scaffoldBackgroundColor,
+            textColor: isSelected ? Colors.white : Colors.black,
             onTap: () {
               // Do something when a day is tapped
             },
           );
         },
         separatorBuilder: (BuildContext context, int index) {
-          return const SizedBox(width: 8);
+          return const SizedBox(width: 16.0);
         },
       ),
     );

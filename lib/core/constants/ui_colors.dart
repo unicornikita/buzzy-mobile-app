@@ -5,6 +5,8 @@ final ThemeData lightTheme = ThemeData(
       primary: Color(0xFFFF5C5C),
       secondary: Color(0xFFFFE8E1),
       tertiary: Color(0xFFc67b64)),
+  hintColor: Color(0xFFD6D6D6),
+  disabledColor: Color(0xFF7E7E7E),
   brightness: Brightness.light,
   primaryColor: const Color(0xFFff5c5c),
   scaffoldBackgroundColor: const Color(0xFFFFFFFF),

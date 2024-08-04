@@ -18,7 +18,8 @@ void main() async {
     ..registerAdapter(DailyScheduleAdapter())
     ..registerAdapter(ClassSubjectAdapter())
     ..registerAdapter(ClassDurationAdapter())
-    ..registerAdapter(UserEventsAdapter());
+    ..registerAdapter(UserEventsAdapter())
+    ..registerAdapter(ClassStatusAdapter());
   await Hive.openBox<WeeklySchedule>('weeklyScheduleBox');
   runApp(const ProviderScope(child: MyApp()));
 }

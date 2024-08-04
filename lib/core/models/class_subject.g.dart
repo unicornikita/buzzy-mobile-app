@@ -8,7 +8,7 @@ part of 'class_subject.dart';
 
 class ClassSubjectAdapter extends TypeAdapter<ClassSubject> {
   @override
-  final int typeId = 3;
+  final int typeId = 2;
 
   @override
   ClassSubject read(BinaryReader reader) {
@@ -55,6 +55,65 @@ class ClassSubjectAdapter extends TypeAdapter<ClassSubject> {
           typeId == other.typeId;
 }
 
+class ClassStatusAdapter extends TypeAdapter<ClassStatus> {
+  @override
+  final int typeId = 5;
+
+  @override
+  ClassStatus read(BinaryReader reader) {
+    switch (reader.readByte()) {
+      case 0:
+        return ClassStatus.nadomescanje;
+      case 1:
+        return ClassStatus.zaposlitev;
+      case 2:
+        return ClassStatus.odpadlaUra;
+      case 3:
+        return ClassStatus.vecSkupin;
+      case 4:
+        return ClassStatus.dogodek;
+      case 5:
+        return ClassStatus.pocitnice;
+      default:
+        return ClassStatus.nadomescanje;
+    }
+  }
+
+  @override
+  void write(BinaryWriter writer, ClassStatus obj) {
+    switch (obj) {
+      case ClassStatus.nadomescanje:
+        writer.writeByte(0);
+        break;
+      case ClassStatus.zaposlitev:
+        writer.writeByte(1);
+        break;
+      case ClassStatus.odpadlaUra:
+        writer.writeByte(2);
+        break;
+      case ClassStatus.vecSkupin:
+        writer.writeByte(3);
+        break;
+      case ClassStatus.dogodek:
+        writer.writeByte(4);
+        break;
+      case ClassStatus.pocitnice:
+        writer.writeByte(5);
+        break;
+    }
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ClassStatusAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
@@ -83,10 +142,10 @@ Map<String, dynamic> _$ClassSubjectToJson(ClassSubject instance) =>
     };
 
 const _$ClassStatusEnumMap = {
-  ClassStatus.nadomescanje: 'nadomescanje',
-  ClassStatus.zaposlitev: 'zaposlitev',
-  ClassStatus.odpadlaUra: 'odpadlaUra',
-  ClassStatus.vecSkupin: 'vecSkupin',
-  ClassStatus.dogodek: 'dogodek',
-  ClassStatus.pocitnice: 'pocitnice',
+  ClassStatus.nadomescanje: 0,
+  ClassStatus.zaposlitev: 1,
+  ClassStatus.odpadlaUra: 2,
+  ClassStatus.vecSkupin: 3,
+  ClassStatus.dogodek: 4,
+  ClassStatus.pocitnice: 5,
 };

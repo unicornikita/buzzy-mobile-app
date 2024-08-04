@@ -8,7 +8,7 @@ part of 'class_duration.dart';
 
 class ClassDurationAdapter extends TypeAdapter<ClassDuration> {
   @override
-  final int typeId = 4;
+  final int typeId = 3;
 
   @override
   ClassDuration read(BinaryReader reader) {

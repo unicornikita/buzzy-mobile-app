@@ -1,3 +1,5 @@
-String urlEncode(String url) {
-  return Uri.encodeFull(url);
+import 'package:intl/intl.dart';
+
+String formatDate(DateTime date) {
+  return DateFormat('HH:mm').format(date);
 }
