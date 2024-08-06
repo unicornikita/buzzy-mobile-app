@@ -37,13 +37,13 @@ class _WeekListState extends ConsumerState<WeekList> {
 
   @override
   Widget build(BuildContext context) {
-    final selectedDay = ref.watch(selectedDayProvider);
+    final int selectedDay = ref.watch(selectedDayProvider);
     final List<DateTime> daysOfWeek = _generateWeekDays();
-    final theme = Theme.of(context);
+    final ThemeData theme = Theme.of(context);
     final DateFormat dayFormat =
         DateFormat.E('sl_SI'); // Short name for the day in Slovenian
 
-    print("length of daysofweek: ${daysOfWeek.length}");
+    print('length of daysofweek: ${daysOfWeek.length}');
     return Container(
       height: MediaQuery.sizeOf(context).height * 0.13,
       width: MediaQuery.sizeOf(context).width,
@@ -57,8 +57,8 @@ class _WeekListState extends ConsumerState<WeekList> {
         itemCount: daysOfWeek.length,
         scrollDirection: Axis.horizontal,
         itemBuilder: (BuildContext context, int index) {
-          print("index of weekday: $index");
-          final isSelected = selectedDay == index;
+          print('index of weekday: $index');
+          final bool isSelected = selectedDay == index;
           final DateTime date = daysOfWeek[index];
           final String dayName = dayFormat
               .format(date)

@@ -43,7 +43,7 @@ Future<WeeklySchedule?> weeklySchedule(WeeklyScheduleRef ref) async {
   final String? classURL = await ref.watch(classUrlProvider.future);
 
   // if the weekly schedule has been fetched today, do not fetch it again
-  final sharedPrefs = await SharedPreferences.getInstance();
+  final SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
   final String currentDate = DateTime.now().toString();
   final String? lastFetchDate = sharedPrefs.getString('lastFetchDate');
   // if today's date is different from the last fetch date, clear cache and fetch again

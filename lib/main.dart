@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: lightTheme,
-      localizationsDelegates: const [
+      localizationsDelegates: const <LocalizationsDelegate>[
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
       ],
@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
         Locale('en'), // English
         Locale('es'), // Spanish
       ],
-      home: HomeScreen(),
+      home: const HomeScreen(),
     );
   }
 }

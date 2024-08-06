@@ -1,7 +1,6 @@
+import 'package:buzzy_mobile/core/models/class_duration.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
-
-import 'class_duration.dart';
 
 part 'class_subject.g.dart';
 

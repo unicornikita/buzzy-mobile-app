@@ -1,8 +1,7 @@
 import 'package:buzzy_mobile/features/home/widgets/buzzy_button.dart';
+import 'package:buzzy_mobile/shared/providers/shared_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../../../shared/providers/shared_providers.dart';
 
 class SelectClassButton extends ConsumerStatefulWidget {
   const SelectClassButton({super.key});
@@ -43,7 +42,7 @@ class _SelectClassButtonState extends ConsumerState<SelectClassButton> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
-                        Text('IZBERI URNIK'),
+                        const Text('IZBERI URNIK'),
                         const SizedBox(height: 16),
                         TextField(
                           controller: classUrlTextController,

@@ -12,9 +12,9 @@ class ClassTile extends StatelessWidget {
   final ClassSubject? classSubject;
   @override
   Widget build(BuildContext context) {
-    final textColor =
+    final Color textColor =
         isNextClass ? Colors.black : Theme.of(context).disabledColor;
-    final containerColor = isNextClass
+    final Color containerColor = isNextClass
         ? Theme.of(context).primaryColor
         : Theme.of(context).hintColor;
     final ThemeData theme = Theme.of(context);

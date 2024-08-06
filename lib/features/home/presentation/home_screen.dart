@@ -3,10 +3,9 @@ import 'package:buzzy_mobile/features/home/widgets/class_list.dart';
 import 'package:buzzy_mobile/features/home/widgets/class_tile.dart';
 import 'package:buzzy_mobile/features/home/widgets/select_class_button.dart';
 import 'package:buzzy_mobile/features/home/widgets/week_list.dart';
+import 'package:buzzy_mobile/shared/providers/shared_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../../../shared/providers/shared_providers.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -49,7 +48,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 }
                 return const ClassList();
               }, error: (Object e, __) {
-                return Text('An error occurred + ${e}');
+                return Text('An error occurred + $e');
               }, loading: () {
                 return const CircularProgressIndicator();
               }),

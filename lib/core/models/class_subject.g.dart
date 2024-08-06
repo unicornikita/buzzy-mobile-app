@@ -12,8 +12,8 @@ class ClassSubjectAdapter extends TypeAdapter<ClassSubject> {
 
   @override
   ClassSubject read(BinaryReader reader) {
-    final numOfFields = reader.readByte();
-    final fields = <int, dynamic>{
+    final int numOfFields = reader.readByte();
+    final Map<int, dynamic> fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return ClassSubject(
@@ -84,22 +84,16 @@ class ClassStatusAdapter extends TypeAdapter<ClassStatus> {
     switch (obj) {
       case ClassStatus.nadomescanje:
         writer.writeByte(0);
-        break;
       case ClassStatus.zaposlitev:
         writer.writeByte(1);
-        break;
       case ClassStatus.odpadlaUra:
         writer.writeByte(2);
-        break;
       case ClassStatus.vecSkupin:
         writer.writeByte(3);
-        break;
       case ClassStatus.dogodek:
         writer.writeByte(4);
-        break;
       case ClassStatus.pocitnice:
         writer.writeByte(5);
-        break;
     }
   }
 
@@ -141,7 +135,7 @@ Map<String, dynamic> _$ClassSubjectToJson(ClassSubject instance) =>
       'SubClasses': instance.classSubjects,
     };
 
-const _$ClassStatusEnumMap = {
+const Map<ClassStatus, int> _$ClassStatusEnumMap = <ClassStatus, int>{
   ClassStatus.nadomescanje: 0,
   ClassStatus.zaposlitev: 1,
   ClassStatus.odpadlaUra: 2,

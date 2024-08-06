@@ -1,9 +1,8 @@
 import 'package:buzzy_mobile/core/models/daily_schedule.dart';
 import 'package:buzzy_mobile/features/home/widgets/class_tile.dart';
+import 'package:buzzy_mobile/shared/providers/shared_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../../../shared/providers/shared_providers.dart';
 
 class ClassList extends ConsumerStatefulWidget {
   const ClassList({super.key});
