@@ -3,10 +3,10 @@ import 'package:buzzy_mobile/features/home/widgets/class_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ClassList extends ConsumerStatefulWidget {
-  const ClassList({super.key, required this.dailySchedule});
+import '../../../shared/providers/shared_providers.dart';
 
-  final DailySchedule dailySchedule;
+class ClassList extends ConsumerStatefulWidget {
+  const ClassList({super.key});
 
   @override
   ConsumerState<ClassList> createState() => _ClassListState();
@@ -15,6 +15,12 @@ class ClassList extends ConsumerStatefulWidget {
 class _ClassListState extends ConsumerState<ClassList> {
   @override
   Widget build(BuildContext context) {
+    final int selectedDailyScheduleIndex =
+        ref.watch(selectedDailyScheduleIndexProvider);
+    final DailySchedule dailySchedule = ref
+        .read(weeklyScheduleProvider)
+        .value!
+        .dailySchedules![selectedDailyScheduleIndex];
     return Expanded(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -22,17 +28,17 @@ class _ClassListState extends ConsumerState<ClassList> {
         children: <Widget>[
           Expanded(
               child: ListView.separated(
-            itemCount: widget.dailySchedule.classSubjects.length,
+            itemCount: dailySchedule.classSubjects.length,
             itemBuilder: (BuildContext context, int index) {
               final bool isNextClass = DateTime.now()
                   .add(
                     const Duration(minutes: 60),
                   )
-                  .isAfter(widget.dailySchedule.classSubjects[index]
-                      .classDuration.endTime);
+                  .isAfter(
+                      dailySchedule.classSubjects[index].classDuration.endTime);
               return ClassTile(
                 isNextClass: isNextClass,
-                classSubject: widget.dailySchedule.classSubjects[index],
+                classSubject: dailySchedule.classSubjects[index],
               );
             },
             separatorBuilder: (BuildContext context, int index) {

@@ -2,17 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class WeekDay extends ConsumerStatefulWidget {
-  const WeekDay(
-      {required this.day,
-      required this.onTap,
-      required this.textColor,
-      this.widgetColor,
-      super.key});
+  const WeekDay({
+    required this.dayName,
+    required this.dayDate,
+    required this.widgetColor,
+    required this.textColor,
+    required this.onTap,
+    super.key,
+  });
 
-  final Map<String, String> day;
-  final void Function() onTap;
-  final Color? widgetColor;
+  final String dayName;
+  final String dayDate;
+  final Color widgetColor;
   final Color textColor;
+  final VoidCallback onTap;
 
   @override
   ConsumerState<WeekDay> createState() => _WeekDayState();
@@ -35,14 +38,14 @@ class _WeekDayState extends ConsumerState<WeekDay> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              widget.day['name']!,
+              widget.dayName,
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     color: widget.textColor,
                   ),
             ),
             const SizedBox(height: 4),
             Text(
-              widget.day['date']!,
+              widget.dayDate,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: widget.textColor,
                   ),

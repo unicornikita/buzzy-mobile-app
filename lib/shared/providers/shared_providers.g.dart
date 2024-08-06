@@ -52,155 +52,68 @@ final weeklyScheduleRepositoryProvider =
 
 typedef WeeklyScheduleRepositoryRef
     = AutoDisposeProviderRef<WeeklyScheduleRepository>;
-String _$weeklyScheduleHash() => r'8a8222cf81cea2f629144c56c79ae32acd7f4307';
-
-/// Copied from Dart SDK
-class _SystemHash {
-  _SystemHash._();
-
-  static int combine(int hash, int value) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + value);
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x0007ffff & hash) << 10));
-    return hash ^ (hash >> 6);
-  }
-
-  static int finish(int hash) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x03ffffff & hash) << 3));
-    // ignore: parameter_assignments
-    hash = hash ^ (hash >> 11);
-    return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
-  }
-}
+String _$weeklyScheduleHash() => r'ce47ab29062cfcf0ba5b10b54d652fa5b76236fe';
 
 /// See also [weeklySchedule].
 @ProviderFor(weeklySchedule)
-const weeklyScheduleProvider = WeeklyScheduleFamily();
+final weeklyScheduleProvider =
+    AutoDisposeFutureProvider<WeeklySchedule?>.internal(
+  weeklySchedule,
+  name: r'weeklyScheduleProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$weeklyScheduleHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
 
-/// See also [weeklySchedule].
-class WeeklyScheduleFamily extends Family<AsyncValue<WeeklySchedule?>> {
-  /// See also [weeklySchedule].
-  const WeeklyScheduleFamily();
+typedef WeeklyScheduleRef = AutoDisposeFutureProviderRef<WeeklySchedule?>;
+String _$classUrlHash() => r'596a1abf2c584923906aceea6b3f738064c47850';
 
-  /// See also [weeklySchedule].
-  WeeklyScheduleProvider call(
-    String classURL,
-  ) {
-    return WeeklyScheduleProvider(
-      classURL,
-    );
-  }
+/// See also [ClassUrl].
+@ProviderFor(ClassUrl)
+final classUrlProvider =
+    AutoDisposeAsyncNotifierProvider<ClassUrl, String?>.internal(
+  ClassUrl.new,
+  name: r'classUrlProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$classUrlHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
 
-  @override
-  WeeklyScheduleProvider getProviderOverride(
-    covariant WeeklyScheduleProvider provider,
-  ) {
-    return call(
-      provider.classURL,
-    );
-  }
+typedef _$ClassUrl = AutoDisposeAsyncNotifier<String?>;
+String _$selectedDayHash() => r'b9519c65833fc797fb5e138bb692ee1998a381e8';
 
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
+/// See also [SelectedDay].
+@ProviderFor(SelectedDay)
+final selectedDayProvider =
+    AutoDisposeNotifierProvider<SelectedDay, int>.internal(
+  SelectedDay.new,
+  name: r'selectedDayProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$selectedDayHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
 
-  @override
-  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+typedef _$SelectedDay = AutoDisposeNotifier<int>;
+String _$selectedDailyScheduleIndexHash() =>
+    r'8d1c6ccbf54a7c6fc62cca3addc8ce1cc0ce91e2';
 
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+/// See also [SelectedDailyScheduleIndex].
+@ProviderFor(SelectedDailyScheduleIndex)
+final selectedDailyScheduleIndexProvider =
+    AutoDisposeNotifierProvider<SelectedDailyScheduleIndex, int>.internal(
+  SelectedDailyScheduleIndex.new,
+  name: r'selectedDailyScheduleIndexProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$selectedDailyScheduleIndexHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
 
-  @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
-
-  @override
-  String? get name => r'weeklyScheduleProvider';
-}
-
-/// See also [weeklySchedule].
-class WeeklyScheduleProvider
-    extends AutoDisposeFutureProvider<WeeklySchedule?> {
-  /// See also [weeklySchedule].
-  WeeklyScheduleProvider(
-    String classURL,
-  ) : this._internal(
-          (ref) => weeklySchedule(
-            ref as WeeklyScheduleRef,
-            classURL,
-          ),
-          from: weeklyScheduleProvider,
-          name: r'weeklyScheduleProvider',
-          debugGetCreateSourceHash:
-              const bool.fromEnvironment('dart.vm.product')
-                  ? null
-                  : _$weeklyScheduleHash,
-          dependencies: WeeklyScheduleFamily._dependencies,
-          allTransitiveDependencies:
-              WeeklyScheduleFamily._allTransitiveDependencies,
-          classURL: classURL,
-        );
-
-  WeeklyScheduleProvider._internal(
-    super._createNotifier, {
-    required super.name,
-    required super.dependencies,
-    required super.allTransitiveDependencies,
-    required super.debugGetCreateSourceHash,
-    required super.from,
-    required this.classURL,
-  }) : super.internal();
-
-  final String classURL;
-
-  @override
-  Override overrideWith(
-    FutureOr<WeeklySchedule?> Function(WeeklyScheduleRef provider) create,
-  ) {
-    return ProviderOverride(
-      origin: this,
-      override: WeeklyScheduleProvider._internal(
-        (ref) => create(ref as WeeklyScheduleRef),
-        from: from,
-        name: null,
-        dependencies: null,
-        allTransitiveDependencies: null,
-        debugGetCreateSourceHash: null,
-        classURL: classURL,
-      ),
-    );
-  }
-
-  @override
-  AutoDisposeFutureProviderElement<WeeklySchedule?> createElement() {
-    return _WeeklyScheduleProviderElement(this);
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return other is WeeklyScheduleProvider && other.classURL == classURL;
-  }
-
-  @override
-  int get hashCode {
-    var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, classURL.hashCode);
-
-    return _SystemHash.finish(hash);
-  }
-}
-
-mixin WeeklyScheduleRef on AutoDisposeFutureProviderRef<WeeklySchedule?> {
-  /// The parameter `classURL` of this provider.
-  String get classURL;
-}
-
-class _WeeklyScheduleProviderElement
-    extends AutoDisposeFutureProviderElement<WeeklySchedule?>
-    with WeeklyScheduleRef {
-  _WeeklyScheduleProviderElement(super.provider);
-
-  @override
-  String get classURL => (origin as WeeklyScheduleProvider).classURL;
-}
+typedef _$SelectedDailyScheduleIndex = AutoDisposeNotifier<int>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

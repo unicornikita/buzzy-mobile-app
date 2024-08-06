@@ -35,11 +35,12 @@ WeeklyScheduleRepository weeklyScheduleRepository(
 }
 
 @riverpod
-Future<WeeklySchedule?> weeklySchedule(
-    WeeklyScheduleRef ref, String classURL) async {
+Future<WeeklySchedule?> weeklySchedule(WeeklyScheduleRef ref) async {
   final ApiService apiService = ref.watch(apiServiceProvider);
   final WeeklyScheduleRepository weeklyScheduleRepository =
       ref.watch(weeklyScheduleRepositoryProvider);
+
+  final String? classURL = await ref.watch(classUrlProvider.future);
 
   // if the weekly schedule has been fetched today, do not fetch it again
   final sharedPrefs = await SharedPreferences.getInstance();
@@ -54,10 +55,51 @@ Future<WeeklySchedule?> weeklySchedule(
   WeeklySchedule? weeklySchedule =
       await weeklyScheduleRepository.getWeeklySchedule();
   //fetch the weekly schedule from the API if it is not found in the local database
-  if (weeklySchedule == null) {
+  if (weeklySchedule == null && classURL != null) {
     weeklySchedule = await apiService
         .getWeeklySchedule(Uri.encodeComponent(classURL)); // EXPLAIN THIS
     await weeklyScheduleRepository.saveWeeklySchedule(weeklySchedule);
   }
+
   return weeklySchedule;
+}
+
+@riverpod
+class ClassUrl extends _$ClassUrl {
+  @override
+  Future<String?> build() async {
+    final SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
+    return sharedPrefs.getString('classURL');
+  }
+
+  Future<void> setClassUrl(String classURL) async {
+    final SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
+    await sharedPrefs.setString('classURL', classURL);
+
+    state = AsyncValue.data(classURL);
+  }
+}
+
+@riverpod
+class SelectedDay extends _$SelectedDay {
+  @override
+  int build() {
+    return 0;
+  }
+
+  void setSelectedDay(int day) {
+    state = day;
+  }
+}
+
+@riverpod
+class SelectedDailyScheduleIndex extends _$SelectedDailyScheduleIndex {
+  @override
+  int build() {
+    return DateTime.now().weekday - 1;
+  }
+
+  void setSelectedDailyScheduleIndex(int index) {
+    state = index;
+  }
 }

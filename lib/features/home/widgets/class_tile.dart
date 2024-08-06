@@ -3,11 +3,13 @@ import 'package:buzzy_mobile/shared/utils/utils.dart';
 import 'package:flutter/material.dart';
 
 class ClassTile extends StatelessWidget {
-  const ClassTile(
-      {super.key, required this.classSubject, required this.isNextClass});
+  const ClassTile({
+    super.key,
+    required this.isNextClass,
+    this.classSubject,
+  });
   final bool isNextClass;
-
-  final ClassSubject classSubject;
+  final ClassSubject? classSubject;
   @override
   Widget build(BuildContext context) {
     final textColor =
@@ -25,22 +27,29 @@ class ClassTile extends StatelessWidget {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            '${formatDate(classSubject.classDuration.startTime)} - ${formatDate(classSubject.classDuration.endTime)}',
-            style: theme.textTheme.bodyMedium?.copyWith(color: textColor),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            classSubject.className,
-            style: theme.textTheme.titleMedium?.copyWith(color: textColor),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            '${classSubject.professor}, ${classSubject.classroom}',
-            style: theme.textTheme.bodyMedium?.copyWith(color: textColor),
-          ),
-        ],
+        children: classSubject != null
+            ? <Widget>[
+                Text(
+                  '${formatDate(classSubject!.classDuration.startTime)} - ${formatDate(classSubject!.classDuration.endTime)}',
+                  style: theme.textTheme.bodyMedium?.copyWith(color: textColor),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  classSubject!.className,
+                  style:
+                      theme.textTheme.titleMedium?.copyWith(color: textColor),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  '${classSubject!.professor}, ${classSubject!.classroom}',
+                  style: theme.textTheme.bodyMedium?.copyWith(color: textColor),
+                ),
+              ]
+            : <Widget>[
+                const SizedBox(height: 8),
+                Text('Urnik ni izbran', style: theme.textTheme.titleMedium),
+                const SizedBox(height: 8),
+              ],
       ),
     );
   }
