@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "64744822776",
+    "project_id": "buzzy-diploma",
+    "storage_bucket": "buzzy-diploma.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:64744822776:android:adfaa60086f8af7063280d",
+        "android_client_info": {
+          "package_name": "si.kapusin.buzzy_mobile"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBcV5uaWQ-tKuMKX0LC7BKqklXJ-RHdKc0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

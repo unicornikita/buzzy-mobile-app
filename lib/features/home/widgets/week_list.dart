@@ -43,7 +43,6 @@ class _WeekListState extends ConsumerState<WeekList> {
     final DateFormat dayFormat =
         DateFormat.E('sl_SI'); // Short name for the day in Slovenian
 
-    print('length of daysofweek: ${daysOfWeek.length}');
     return Container(
       height: MediaQuery.sizeOf(context).height * 0.13,
       width: MediaQuery.sizeOf(context).width,
@@ -57,7 +56,6 @@ class _WeekListState extends ConsumerState<WeekList> {
         itemCount: daysOfWeek.length,
         scrollDirection: Axis.horizontal,
         itemBuilder: (BuildContext context, int index) {
-          print('index of weekday: $index');
           final bool isSelected = selectedDay == index;
           final DateTime date = daysOfWeek[index];
           final String dayName = dayFormat
