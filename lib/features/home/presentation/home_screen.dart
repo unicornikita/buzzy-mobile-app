@@ -3,6 +3,7 @@ import 'package:buzzy_mobile/features/home/widgets/class_list.dart';
 import 'package:buzzy_mobile/features/home/widgets/class_tile.dart';
 import 'package:buzzy_mobile/features/home/widgets/select_class_button.dart';
 import 'package:buzzy_mobile/features/home/widgets/week_list.dart';
+import 'package:buzzy_mobile/main.dart';
 import 'package:buzzy_mobile/shared/providers/shared_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,8 +18,14 @@ class HomeScreen extends ConsumerStatefulWidget {
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    final int currentWeekday = DateTime.now().weekday;
-    final AsyncValue<String?> selectedClass = ref.watch(classUrlProvider);
+    // Adding a listener to classUrlProvider for immediate subscription to the Firebase topic
+    ref.listen(classUrlProvider,
+        (AsyncValue<String?>? previous, AsyncValue<String?>? next) async {
+      if (next != null && next.value!.isNotEmpty) {
+        final String? url = next.value;
+        subscribeToFirebaseTopic(url!);
+      }
+    });
     AsyncValue<WeeklySchedule?> schedule = ref.watch(weeklyScheduleProvider);
     return Scaffold(
       resizeToAvoidBottomInset: true,

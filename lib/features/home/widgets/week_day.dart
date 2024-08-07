@@ -24,14 +24,13 @@ class WeekDay extends ConsumerStatefulWidget {
 class _WeekDayState extends ConsumerState<WeekDay> {
   @override
   Widget build(BuildContext context) {
-    final ThemeData colors = Theme.of(context);
     return InkWell(
       onTap: widget.onTap,
       child: Container(
-        width: MediaQuery.of(context).size.width * 0.15,
+        width: MediaQuery.of(context).size.width * 0.2,
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: widget.widgetColor ?? colors.colorScheme.primary,
+          color: widget.widgetColor,
           borderRadius: BorderRadius.circular(8.0),
         ),
         child: Column(

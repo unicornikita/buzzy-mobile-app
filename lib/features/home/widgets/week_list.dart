@@ -44,7 +44,7 @@ class _WeekListState extends ConsumerState<WeekList> {
         DateFormat.E('sl_SI'); // Short name for the day in Slovenian
 
     return Container(
-      height: MediaQuery.sizeOf(context).height * 0.13,
+      height: MediaQuery.sizeOf(context).height * 0.15,
       width: MediaQuery.sizeOf(context).width,
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.secondary,

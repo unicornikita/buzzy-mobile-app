@@ -79,9 +79,10 @@ class ClassUrl extends _$ClassUrl {
     state = AsyncValue.data(classURL);
   }
 
-  Future<String?> getClassUrL() async {
+  Future<String> getClassUrL() async {
     final SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
-    return sharedPrefs.getString('classURL');
+    final String? classUrl = sharedPrefs.getString('classURL');
+    return classUrl ?? '';
   }
 }
 
