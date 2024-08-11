@@ -6,6 +6,9 @@ import 'package:dio_smart_retry/dio_smart_retry.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../core/models/class_subject.dart';
+import '../../core/models/daily_schedule.dart';
+
 part 'shared_providers.g.dart';
 
 @riverpod
@@ -35,33 +38,52 @@ WeeklyScheduleRepository weeklyScheduleRepository(
 }
 
 @riverpod
-Future<WeeklySchedule?> weeklySchedule(WeeklyScheduleRef ref) async {
-  final ApiService apiService = ref.watch(apiServiceProvider);
-  final WeeklyScheduleRepository weeklyScheduleRepository =
-      ref.watch(weeklyScheduleRepositoryProvider);
+class WeeklyScheduleList extends _$WeeklyScheduleList {
+  @override
+  Future<WeeklySchedule?> build() async {
+    final ApiService apiService = ref.watch(apiServiceProvider);
+    final WeeklyScheduleRepository weeklyScheduleRepository =
+        ref.watch(weeklyScheduleRepositoryProvider);
 
-  final String? classURL = await ref.watch(classUrlProvider.future);
+    final String? classURL = await ref.watch(classUrlProvider.future);
 
-  // if the weekly schedule has been fetched today, do not fetch it again
-  final SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
-  final String currentDate = DateTime.now().toString();
-  final String? lastFetchDate = sharedPrefs.getString('lastFetchDate');
-  // if today's date is different from the last fetch date, clear cache and fetch again
-  if (currentDate != lastFetchDate) {
-    await sharedPrefs.setString('lastFetchDate', currentDate);
-    await weeklyScheduleRepository.deleteWeeklySchedule();
+    // if the weekly schedule has been fetched today, do not fetch it again
+    final SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
+    final String currentDate = DateTime.now().toString();
+    final String? lastFetchDate = sharedPrefs.getString('lastFetchDate');
+    // if today's date is different from the last fetch date, clear cache and fetch again
+    if (currentDate != lastFetchDate &&
+        DateTime.now().weekday != 6 &&
+        DateTime.now().weekday != 7) {
+      await sharedPrefs.setString('lastFetchDate', currentDate);
+      await weeklyScheduleRepository.deleteWeeklySchedule();
+    }
+    // attempt to fetch the weekly schedule from the local database
+    WeeklySchedule? weeklySchedule =
+        await weeklyScheduleRepository.getWeeklySchedule();
+    //fetch the weekly schedule from the API if it is not found in the local database
+    if (weeklySchedule == null && classURL != null) {
+      weeklySchedule = await apiService
+          .getWeeklySchedule(Uri.encodeComponent(classURL)); // EXPLAIN THIS
+      await weeklyScheduleRepository.saveWeeklySchedule(weeklySchedule);
+    }
+    return weeklySchedule;
   }
-  // attempt to fetch the weekly schedule from the local database
-  WeeklySchedule? weeklySchedule =
-      await weeklyScheduleRepository.getWeeklySchedule();
-  //fetch the weekly schedule from the API if it is not found in the local database
-  if (weeklySchedule == null && classURL != null) {
-    weeklySchedule = await apiService
-        .getWeeklySchedule(Uri.encodeComponent(classURL)); // EXPLAIN THIS
-    await weeklyScheduleRepository.saveWeeklySchedule(weeklySchedule);
-  }
 
-  return weeklySchedule;
+  void updateWeeklySchedule(DailySchedule updatedDailySchedule) {
+    final weeklySchedule = state.value?.dailySchedules;
+    final dailyScheduleIndex = ref.watch(selectedDailyScheduleIndexProvider);
+    weeklySchedule?[dailyScheduleIndex] = updatedDailySchedule;
+
+    final WeeklySchedule? updatedWeeklySchedule =
+        state.value?.copyWith(dailySchedules: weeklySchedule);
+
+    state = AsyncValue<WeeklySchedule?>.data(updatedWeeklySchedule);
+
+    ref.watch(weeklyScheduleRepositoryProvider).saveWeeklySchedule(
+          updatedWeeklySchedule!,
+        );
+  }
 }
 
 @riverpod
@@ -102,10 +124,70 @@ class SelectedDay extends _$SelectedDay {
 class SelectedDailyScheduleIndex extends _$SelectedDailyScheduleIndex {
   @override
   int build() {
+    if (DateTime.now().weekday == 6 || DateTime.now().weekday == 7) {
+      return 0;
+    }
     return DateTime.now().weekday - 1;
   }
 
   void setSelectedDailyScheduleIndex(int index) {
     state = index;
+  }
+}
+
+//this provider is responsible for selecting the class subject within a daily schedule for
+//updating the free period with custom class name and optional class details and
+//eventually saving this in the local database for the chosen day
+
+@riverpod
+class SelectedClassSubject extends _$SelectedClassSubject {
+  DailySchedule?
+      _dailySchedule; // Hold the daily schedule that contains the selected class subject
+
+  @override
+  ClassSubject? build() {
+    return null; // Initially, no class subject is selected
+  }
+
+  // Method to select a class subject within a daily schedule
+  void selectClassSubject(ClassSubject classSubject) {
+    final int dailyScheduleIndex =
+        ref.watch(selectedDailyScheduleIndexProvider);
+    _dailySchedule = ref
+        .watch(weeklyScheduleListProvider)
+        .value!
+        .dailySchedules![dailyScheduleIndex];
+    state = classSubject;
+  }
+
+  // Method to update a free period with a custom class name and optional details
+  Future<void> updateFreePeriod(
+    String className, {
+    String? professor,
+    String? classroom,
+  }) async {
+    if (state == null || _dailySchedule == null) {
+      // Handle the case where no class subject or daily schedule is selected
+      return;
+    }
+
+    final ClassSubject updatedClassSubject = state!.copyWith(
+      className: className,
+      professor: professor,
+      classroom: classroom,
+    );
+
+    // Find the index of the current class subject in the daily schedule
+    final int classSubjectIndex = _dailySchedule!.classSubjects.indexWhere(
+        (ClassSubject cs) => cs.classDuration == state!.classDuration);
+    if (classSubjectIndex != -1) {
+      // Update the class subject in the daily schedule
+      _dailySchedule!.classSubjects[classSubjectIndex] = updatedClassSubject;
+    }
+    ref
+        .watch(weeklyScheduleListProvider.notifier)
+        .updateWeeklySchedule(_dailySchedule!);
+    // Update the provider state
+    state = updatedClassSubject;
   }
 }

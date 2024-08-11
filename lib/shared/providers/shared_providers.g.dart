@@ -52,23 +52,24 @@ final weeklyScheduleRepositoryProvider =
 
 typedef WeeklyScheduleRepositoryRef
     = AutoDisposeProviderRef<WeeklyScheduleRepository>;
-String _$weeklyScheduleHash() => r'ce47ab29062cfcf0ba5b10b54d652fa5b76236fe';
+String _$weeklyScheduleListHash() =>
+    r'3746f96ef384e461e44c885368d1b5ba0c639177';
 
-/// See also [weeklySchedule].
-@ProviderFor(weeklySchedule)
-final weeklyScheduleProvider =
-    AutoDisposeFutureProvider<WeeklySchedule?>.internal(
-  weeklySchedule,
-  name: r'weeklyScheduleProvider',
+/// See also [WeeklyScheduleList].
+@ProviderFor(WeeklyScheduleList)
+final weeklyScheduleListProvider = AutoDisposeAsyncNotifierProvider<
+    WeeklyScheduleList, WeeklySchedule?>.internal(
+  WeeklyScheduleList.new,
+  name: r'weeklyScheduleListProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$weeklyScheduleHash,
+      : _$weeklyScheduleListHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef WeeklyScheduleRef = AutoDisposeFutureProviderRef<WeeklySchedule?>;
-String _$classUrlHash() => r'596a1abf2c584923906aceea6b3f738064c47850';
+typedef _$WeeklyScheduleList = AutoDisposeAsyncNotifier<WeeklySchedule?>;
+String _$classUrlHash() => r'2c5ad27a5fbdef873d7cd3b7b3de513d757aae83';
 
 /// See also [ClassUrl].
 @ProviderFor(ClassUrl)
@@ -99,7 +100,7 @@ final selectedDayProvider =
 
 typedef _$SelectedDay = AutoDisposeNotifier<int>;
 String _$selectedDailyScheduleIndexHash() =>
-    r'8d1c6ccbf54a7c6fc62cca3addc8ce1cc0ce91e2';
+    r'8343819f77c11d27142cb26422d700bd3f90ed82';
 
 /// See also [SelectedDailyScheduleIndex].
 @ProviderFor(SelectedDailyScheduleIndex)
@@ -115,5 +116,22 @@ final selectedDailyScheduleIndexProvider =
 );
 
 typedef _$SelectedDailyScheduleIndex = AutoDisposeNotifier<int>;
+String _$selectedClassSubjectHash() =>
+    r'590fe7d6ca628fc8c42cb0837f651bbfe3a4abb6';
+
+/// See also [SelectedClassSubject].
+@ProviderFor(SelectedClassSubject)
+final selectedClassSubjectProvider =
+    AutoDisposeNotifierProvider<SelectedClassSubject, ClassSubject?>.internal(
+  SelectedClassSubject.new,
+  name: r'selectedClassSubjectProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$selectedClassSubjectHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$SelectedClassSubject = AutoDisposeNotifier<ClassSubject?>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

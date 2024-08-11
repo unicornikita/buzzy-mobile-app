@@ -1,9 +1,9 @@
 import 'package:hive/hive.dart';
 
-part 'user_events.g.dart';
+part 'user_event.g.dart';
 
 @HiveType(typeId: 4)
-class UserEvents {
+class UserEvent {
   @HiveField(0)
   late String title;
   @HiveField(1)

@@ -2,7 +2,7 @@ import 'package:buzzy_mobile/core/constants/ui_colors.dart';
 import 'package:buzzy_mobile/core/models/class_duration.dart';
 import 'package:buzzy_mobile/core/models/class_subject.dart';
 import 'package:buzzy_mobile/core/models/daily_schedule.dart';
-import 'package:buzzy_mobile/core/models/user_events.dart';
+import 'package:buzzy_mobile/core/models/user_event.dart';
 import 'package:buzzy_mobile/core/models/weekly_schedule.dart';
 import 'package:buzzy_mobile/features/home/presentation/home_screen.dart';
 import 'package:buzzy_mobile/firebase_options.dart';
@@ -55,7 +55,7 @@ void main() async {
     ..registerAdapter(DailyScheduleAdapter())
     ..registerAdapter(ClassSubjectAdapter())
     ..registerAdapter(ClassDurationAdapter())
-    ..registerAdapter(UserEventsAdapter())
+    ..registerAdapter(UserEventAdapter())
     ..registerAdapter(ClassStatusAdapter());
   await Hive.openBox<WeeklySchedule>('weeklyScheduleBox');
 

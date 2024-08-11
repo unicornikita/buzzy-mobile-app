@@ -36,6 +36,18 @@ class ClassSubject {
   @HiveField(5)
   @JsonKey(name: 'SubClasses')
   List<ClassSubject>? classSubjects;
+
+  ClassSubject copyWith(
+      {required String className, String? professor, String? classroom}) {
+    return ClassSubject(
+      className: className,
+      professor: professor ?? this.professor,
+      classroom: classroom ?? this.classroom,
+      classDuration: classDuration,
+      classStatusInt: classStatusInt,
+      classSubjects: classSubjects,
+    );
+  }
 }
 
 @HiveType(typeId: 5)

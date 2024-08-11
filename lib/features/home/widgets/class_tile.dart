@@ -1,8 +1,12 @@
 import 'package:buzzy_mobile/core/models/class_subject.dart';
 import 'package:buzzy_mobile/shared/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ClassTile extends StatelessWidget {
+import '../../../shared/providers/shared_providers.dart';
+import 'buzzy_button.dart';
+
+class ClassTile extends ConsumerStatefulWidget {
   const ClassTile({
     super.key,
     required this.isNextClass,
@@ -10,46 +14,139 @@ class ClassTile extends StatelessWidget {
   });
   final bool isNextClass;
   final ClassSubject? classSubject;
+
+  @override
+  ConsumerState<ClassTile> createState() => _ClassTileState();
+}
+
+class _ClassTileState extends ConsumerState<ClassTile> {
+  final TextEditingController eventNameController = TextEditingController();
+  final TextEditingController eventDetailsController = TextEditingController();
+
+  @override
+  void dispose() {
+    eventDetailsController.dispose();
+    eventNameController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final Color textColor =
-        isNextClass ? Colors.black : Theme.of(context).disabledColor;
-    final Color containerColor = isNextClass
+        widget.isNextClass ? Colors.black : Theme.of(context).disabledColor;
+    final Color containerColor = widget.isNextClass
         ? Theme.of(context).primaryColor
         : Theme.of(context).hintColor;
     final ThemeData theme = Theme.of(context);
-    return Container(
-      padding: const EdgeInsets.all(16.0),
-      decoration: BoxDecoration(
-        color: theme.scaffoldBackgroundColor,
-        border: Border.all(color: containerColor),
-        borderRadius: BorderRadius.circular(8.0),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: classSubject != null
-            ? <Widget>[
-                Text(
-                  '${formatDate(classSubject!.classDuration.startTime)} - ${formatDate(classSubject!.classDuration.endTime)}',
-                  style: theme.textTheme.bodyMedium?.copyWith(color: textColor),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  classSubject!.className,
-                  style:
-                      theme.textTheme.titleMedium?.copyWith(color: textColor),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  '${classSubject!.professor}, ${classSubject!.classroom}',
-                  style: theme.textTheme.bodyMedium?.copyWith(color: textColor),
-                ),
-              ]
-            : <Widget>[
-                const SizedBox(height: 8),
-                Text('Urnik ni izbran', style: theme.textTheme.titleMedium),
-                const SizedBox(height: 8),
-              ],
+    String? className;
+    String? classDetails;
+    if (widget.classSubject != null) {
+      className = widget.classSubject!.className.isNotEmpty
+          ? widget.classSubject!.className
+          : 'PROSTO';
+      classDetails = widget.classSubject != null
+          ? '${widget.classSubject?.professor} - ${widget.classSubject?.classroom}'
+          : '';
+    }
+
+    return InkWell(
+      onTap: () {
+        if (className == 'PROSTO' || className == 'Počitnice') {
+          showModalBottomSheet<void>(
+              isScrollControlled: true,
+              context: context,
+              builder: (BuildContext context) {
+                return Padding(
+                  padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).viewInsets.bottom),
+                  child: Container(
+                    width: double.infinity,
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(16.0),
+                        topRight: Radius.circular(16.0),
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          const Text('DODAJ DOGODEK'),
+                          const SizedBox(height: 16),
+                          TextField(
+                            controller: eventNameController,
+                            decoration: const InputDecoration(
+                              border: OutlineInputBorder(),
+                              hintText: 'Ime dogodka',
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          TextField(
+                            controller: eventDetailsController,
+                            decoration: const InputDecoration(
+                              border: OutlineInputBorder(),
+                              hintText: 'Podrobnosti',
+                            ),
+                          ),
+                          BuzzyButton(
+                              onPressed: () {
+                                ref
+                                    .read(selectedClassSubjectProvider.notifier)
+                                    .selectClassSubject(widget.classSubject!);
+
+                                ref
+                                    .read(selectedClassSubjectProvider.notifier)
+                                    .updateFreePeriod(
+                                      eventNameController.text,
+                                      professor: eventDetailsController.text,
+                                    );
+                                Navigator.of(context).pop();
+                              },
+                              text: 'POTRDI'),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              });
+        }
+      },
+      child: Container(
+        padding: const EdgeInsets.all(16.0),
+        decoration: BoxDecoration(
+          color: theme.scaffoldBackgroundColor,
+          border: Border.all(color: containerColor),
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: widget.classSubject != null
+              ? <Widget>[
+                  Text(
+                    '${formatDate(widget.classSubject!.classDuration.startTime)} - ${formatDate(widget.classSubject!.classDuration.endTime)}',
+                    style:
+                        theme.textTheme.bodyMedium?.copyWith(color: textColor),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    className!,
+                    style:
+                        theme.textTheme.titleMedium?.copyWith(color: textColor),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    classDetails!,
+                    style:
+                        theme.textTheme.bodyMedium?.copyWith(color: textColor),
+                  ),
+                ]
+              : <Widget>[
+                  const SizedBox(height: 8),
+                  Text('Urnik ni izbran', style: theme.textTheme.titleMedium),
+                  const SizedBox(height: 8),
+                ],
+        ),
       ),
     );
   }

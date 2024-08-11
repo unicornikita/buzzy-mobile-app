@@ -16,8 +16,8 @@ class _WeekListState extends ConsumerState<WeekList> {
     final DateTime now = DateTime.now();
     final List<DateTime> days = <DateTime>[];
 
-    // Generate the list of weekdays, starting from today and including next 14 days to account for weekends
-    for (int i = 0; i < 14; i++) {
+    // Generate the list of weekdays, starting from today and including next 7 days to account for weekends
+    for (int i = 0; i < 7; i++) {
       final DateTime date = now.add(Duration(days: i));
       days.add(date);
     }
@@ -29,8 +29,8 @@ class _WeekListState extends ConsumerState<WeekList> {
             date.weekday != DateTime.sunday)
         .toList();
 
-    // Ensure we get the first 10 weekdays starting from today
-    final List<DateTime> orderedDays = filteredDays.take(10).toList();
+    // Ensure we get the first 5 weekdays starting from today
+    final List<DateTime> orderedDays = filteredDays.take(5).toList();
 
     return orderedDays;
   }

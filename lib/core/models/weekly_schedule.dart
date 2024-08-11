@@ -21,4 +21,10 @@ class WeeklySchedule {
   String error() {
     return 'unable to get the schedule';
   }
+
+  WeeklySchedule copyWith({List<DailySchedule>? dailySchedules}) {
+    return WeeklySchedule(
+      dailySchedules: dailySchedules ?? this.dailySchedules,
+    );
+  }
 }

@@ -26,7 +26,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         subscribeToFirebaseTopic(url!);
       }
     });
-    AsyncValue<WeeklySchedule?> schedule = ref.watch(weeklyScheduleProvider);
+    AsyncValue<WeeklySchedule?> schedule =
+        ref.watch(weeklyScheduleListProvider);
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
@@ -41,7 +42,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       ),
       body: RefreshIndicator(
         onRefresh: () async {
-          schedule = ref.refresh(weeklyScheduleProvider);
+          schedule = ref.refresh(weeklyScheduleListProvider);
         },
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
