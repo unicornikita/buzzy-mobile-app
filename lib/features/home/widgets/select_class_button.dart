@@ -66,7 +66,7 @@ class _SelectClassButtonState extends ConsumerState<SelectClassButton> {
               );
             });
       },
-      text: 'IZBERI RAZRED',
+      text: 'IZBERI URNIK',
     );
   }
 }
