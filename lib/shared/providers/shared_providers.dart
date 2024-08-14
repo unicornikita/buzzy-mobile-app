@@ -1,3 +1,5 @@
+import 'package:buzzy_mobile/core/models/class_subject.dart';
+import 'package:buzzy_mobile/core/models/daily_schedule.dart';
 import 'package:buzzy_mobile/core/models/weekly_schedule.dart';
 import 'package:buzzy_mobile/core/repositories/weekly_schedule_repository.dart';
 import 'package:buzzy_mobile/core/services/api/api_service.dart';
@@ -5,9 +7,6 @@ import 'package:dio/dio.dart';
 import 'package:dio_smart_retry/dio_smart_retry.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../../core/models/class_subject.dart';
-import '../../core/models/daily_schedule.dart';
 
 part 'shared_providers.g.dart';
 
@@ -71,8 +70,9 @@ class WeeklyScheduleList extends _$WeeklyScheduleList {
   }
 
   void updateWeeklySchedule(DailySchedule updatedDailySchedule) {
-    final weeklySchedule = state.value?.dailySchedules;
-    final dailyScheduleIndex = ref.watch(selectedDailyScheduleIndexProvider);
+    final List<DailySchedule>? weeklySchedule = state.value?.dailySchedules;
+    final int dailyScheduleIndex =
+        ref.watch(selectedDailyScheduleIndexProvider);
     weeklySchedule?[dailyScheduleIndex] = updatedDailySchedule;
 
     final WeeklySchedule? updatedWeeklySchedule =
