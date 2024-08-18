@@ -1,3 +1,4 @@
+import 'package:buzzy_mobile/core/models/class_subject.dart';
 import 'package:buzzy_mobile/core/models/daily_schedule.dart';
 import 'package:buzzy_mobile/features/home/widgets/class_tile.dart';
 import 'package:buzzy_mobile/shared/providers/shared_providers.dart';
@@ -14,52 +15,81 @@ class ClassList extends ConsumerStatefulWidget {
 class _ClassListState extends ConsumerState<ClassList> {
   @override
   Widget build(BuildContext context) {
+    // Retrieve the selected schedule and classes from providers
     final int selectedDailyScheduleIndex =
         ref.watch(selectedDailyScheduleIndexProvider);
     final DailySchedule dailySchedule = ref
         .watch(weeklyScheduleListProvider)
         .value!
         .dailySchedules![selectedDailyScheduleIndex];
+
     return Expanded(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Expanded(
-              child: ListView.separated(
-            itemCount: dailySchedule.classSubjects.length,
-            itemBuilder: (BuildContext context, int index) {
-              // Assuming dailySchedule.classSubjects is sorted by class start time
-              bool isNextClass = false;
-              final currentClass = dailySchedule.classSubjects[index];
-              if (currentClass.className.isNotEmpty) {
-// Get the current time
-                final DateTime now = DateTime.now();
-
-// Iterate over the classes to determine the next class
-
-                final DateTime classStartTime =
-                    currentClass.classDuration.startTime;
-
-                // If the class starts after the current time and is within the next hour
-                if (classStartTime.isAfter(now) &&
-                    classStartTime
-                        .isBefore(now.add(const Duration(minutes: 60)))) {
-                  isNextClass = true;
-                }
-                return ClassTile(
-                  isNextClass: isNextClass,
-                  classSubject: currentClass,
-                );
-              } else {
-                return ClassTile(isNextClass: false);
-              }
-            },
-            separatorBuilder: (BuildContext context, int index) {
-              return const SizedBox(height: 16);
-            },
-          ))
+            child: _buildClassList(dailySchedule),
+          ),
         ],
+      ),
+    );
+  }
+
+  // Helper method to build the main class list
+  Widget _buildClassList(DailySchedule dailySchedule) {
+    return ListView.separated(
+      shrinkWrap: true,
+      itemCount: dailySchedule.classSubjects.length,
+      itemBuilder: (BuildContext context, int index) {
+        final ClassSubject currentClass = dailySchedule.classSubjects[index];
+        final bool isNextClass =
+            _isNextClass(currentClass.classDuration.startTime);
+
+        // Check if the class has sub-classes (classSubjects)
+        if (currentClass.classSubjects?.isNotEmpty ?? false) {
+          return _buildSubClassList(currentClass, isNextClass);
+        }
+
+        // Return the class tile when no sub-classes are present
+        return ClassTile(
+          isNextClass: isNextClass,
+          classSubject: currentClass,
+        );
+      },
+      separatorBuilder: (BuildContext context, int index) {
+        return const SizedBox(height: 16);
+      },
+    );
+  }
+
+  // Helper method to check if a class is the next one (starting soon)
+  bool _isNextClass(DateTime classStartTime) {
+    final DateTime now = DateTime.now();
+    return classStartTime.isAfter(now) &&
+        classStartTime.isBefore(now.add(const Duration(minutes: 60)));
+  }
+
+  // Helper method to build a list of sub-classes if any are present
+  Widget _buildSubClassList(ClassSubject currentClass, bool isNextClass) {
+    return SizedBox(
+      height: 150,
+      child: ListView.separated(
+        shrinkWrap: true,
+        scrollDirection: Axis.horizontal,
+        itemCount: currentClass.classSubjects!.length + 1,
+        itemBuilder: (BuildContext context, int index) {
+          // If index is 0, show the current class, otherwise show sub-classes
+          return ClassTile(
+            isNextClass: isNextClass,
+            classSubject: index == 0
+                ? currentClass
+                : currentClass.classSubjects![index - 1],
+          );
+        },
+        separatorBuilder: (BuildContext context, int index) {
+          return const SizedBox(width: 16);
+        },
       ),
     );
   }

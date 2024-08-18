@@ -57,6 +57,8 @@ class _SelectClassButtonState extends ConsumerState<SelectClassButton> {
                                   .read(classUrlProvider.notifier)
                                   .setClassUrl(classUrlTextController.text);
                               Navigator.of(context).pop();
+
+                              classUrlTextController.clear();
                             },
                             text: 'POTRDI'),
                       ],

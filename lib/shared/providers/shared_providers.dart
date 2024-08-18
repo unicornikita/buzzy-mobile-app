@@ -45,7 +45,7 @@ class WeeklyScheduleList extends _$WeeklyScheduleList {
         ref.watch(weeklyScheduleRepositoryProvider);
 
     final String? classURL = await ref.watch(classUrlProvider.future);
-
+    final String? classID = classURL?.split('/').last;
     // if the weekly schedule has been fetched today, do not fetch it again
     final SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
     final String currentDate = DateTime.now().toString();
@@ -55,25 +55,28 @@ class WeeklyScheduleList extends _$WeeklyScheduleList {
         DateTime.now().weekday != 6 &&
         DateTime.now().weekday != 7) {
       await sharedPrefs.setString('lastFetchDate', currentDate);
-      await weeklyScheduleRepository.deleteWeeklySchedule();
+      await weeklyScheduleRepository.deleteWeeklySchedule(classID!);
     }
     // attempt to fetch the weekly schedule from the local database
     WeeklySchedule? weeklySchedule =
-        await weeklyScheduleRepository.getWeeklySchedule();
+        await weeklyScheduleRepository.getWeeklySchedule(classID ?? '');
     //fetch the weekly schedule from the API if it is not found in the local database
     if (weeklySchedule == null && classURL != null) {
-      weeklySchedule = await apiService
-          .getWeeklySchedule(Uri.encodeComponent(classURL)); // EXPLAIN THIS
-      await weeklyScheduleRepository.saveWeeklySchedule(weeklySchedule);
+      weeklySchedule =
+          await apiService.getWeeklySchedule(Uri.encodeComponent(classURL));
+      await weeklyScheduleRepository.saveWeeklySchedule(
+          weeklySchedule, classID!);
     }
     return weeklySchedule;
   }
 
-  void updateWeeklySchedule(DailySchedule updatedDailySchedule) {
+  Future<void> updateWeeklySchedule(DailySchedule updatedDailySchedule) async {
     final List<DailySchedule>? weeklySchedule = state.value?.dailySchedules;
     final int dailyScheduleIndex =
         ref.watch(selectedDailyScheduleIndexProvider);
     weeklySchedule?[dailyScheduleIndex] = updatedDailySchedule;
+    final String? classURL = await ref.watch(classUrlProvider.future);
+    final String? classID = classURL?.split('/').last;
 
     final WeeklySchedule? updatedWeeklySchedule =
         state.value?.copyWith(dailySchedules: weeklySchedule);
@@ -82,6 +85,7 @@ class WeeklyScheduleList extends _$WeeklyScheduleList {
 
     ref.watch(weeklyScheduleRepositoryProvider).saveWeeklySchedule(
           updatedWeeklySchedule!,
+          classID!,
         );
   }
 }

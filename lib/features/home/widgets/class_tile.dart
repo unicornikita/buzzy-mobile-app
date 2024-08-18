@@ -38,16 +38,25 @@ class _ClassTileState extends ConsumerState<ClassTile> {
         ? Theme.of(context).primaryColor
         : Theme.of(context).hintColor;
 
-    final String className = widget.classSubject?.className.isNotEmpty ?? false
-        ? widget.classSubject!.className
-        : 'PROSTO';
-    final String classDetails = widget.classSubject != null
-        ? '${widget.classSubject?.professor} - ${widget.classSubject?.classroom}'
-        : '';
+    String classDetails = '';
+    String className = '';
+
+    if (widget.classSubject != null) {
+      final ClassSubject classSubject = widget.classSubject!;
+      final String classNameValue =
+          classSubject.className.isNotEmpty ? classSubject.className : 'PROSTO';
+
+      className = classNameValue;
+
+      if (classNameValue.isNotEmpty || classNameValue == 'PROSTO') {
+        classDetails = '${classSubject.professor}, ${classSubject.classroom}';
+      }
+    }
 
     return InkWell(
       onTap: () {
-        if (className == 'PROSTO' || className == 'Počitnice') {
+        if (className == 'PROSTO' ||
+            widget.classSubject?.classStatusInt?.index == 5) {
           _buildBottomSheet();
         }
       },
@@ -59,42 +68,46 @@ class _ClassTileState extends ConsumerState<ClassTile> {
           borderRadius: BorderRadius.circular(8.0),
         ),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: widget.classSubject != null
-              ? [
-                  Text(
-                    '${formatDate(widget.classSubject!.classDuration.startTime)} - ${formatDate(widget.classSubject!.classDuration.endTime)}',
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyMedium
-                        ?.copyWith(color: textColor),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    className,
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleMedium
-                        ?.copyWith(color: textColor),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    classDetails,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyMedium
-                        ?.copyWith(color: textColor),
-                  ),
-                ]
-              : [
-                  const SizedBox(height: 8),
-                  Text('Urnik ni izbran',
-                      style: Theme.of(context).textTheme.titleMedium),
-                  const SizedBox(height: 8),
-                ],
-        ),
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: widget.classSubject != null
+                ? _buildClassDetails(textColor, className, classDetails)
+                : _buildNoScheduleSelected()),
       ),
     );
+  }
+
+  List<Widget> _buildNoScheduleSelected() {
+    return <Widget>[
+      const SizedBox(height: 8),
+      Text('Urnik ni izbran', style: Theme.of(context).textTheme.titleMedium),
+      const SizedBox(height: 8),
+    ];
+  }
+
+  List<Widget> _buildClassDetails(
+    Color textColor,
+    String className,
+    String classDetails,
+  ) {
+    return <Widget>[
+      Text(
+        '${formatDate(widget.classSubject!.classDuration.startTime)} - ${formatDate(widget.classSubject!.classDuration.endTime)}',
+        style:
+            Theme.of(context).textTheme.bodyMedium?.copyWith(color: textColor),
+      ),
+      const SizedBox(height: 8),
+      Text(
+        className,
+        style:
+            Theme.of(context).textTheme.titleMedium?.copyWith(color: textColor),
+      ),
+      const SizedBox(height: 8),
+      Text(
+        classDetails,
+        style:
+            Theme.of(context).textTheme.bodyMedium?.copyWith(color: textColor),
+      ),
+    ];
   }
 
   Future<void> _buildBottomSheet() {
