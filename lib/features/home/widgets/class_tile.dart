@@ -1,10 +1,9 @@
 import 'package:buzzy_mobile/core/models/class_subject.dart';
+import 'package:buzzy_mobile/features/home/widgets/buzzy_button.dart';
+import 'package:buzzy_mobile/shared/providers/shared_providers.dart';
 import 'package:buzzy_mobile/shared/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../../../shared/providers/shared_providers.dart';
-import 'buzzy_button.dart';
 
 class ClassTile extends ConsumerStatefulWidget {
   const ClassTile({
@@ -30,6 +29,7 @@ class _ClassTileState extends ConsumerState<ClassTile> {
     super.dispose();
   }
 
+  @override
   Widget build(BuildContext context) {
     final bool isNextClass = widget.isNextClass;
     final Color textColor =

@@ -16,12 +16,6 @@ import 'package:hive_flutter/hive_flutter.dart';
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 
-Future<void> subscribeToFirebaseTopic(String classUrl) async {
-  final String topic = 'nextClass${classUrl.split('/').last}';
-  await FirebaseMessaging.instance.subscribeToTopic(topic);
-  print('Subscribed to topic: $topic');
-}
-
 // Listening to the background messages
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
@@ -36,15 +30,7 @@ void main() async {
 
   final FirebaseMessaging messaging = FirebaseMessaging.instance;
 
-  final NotificationSettings settings = await messaging.requestPermission(
-    alert: true,
-    announcement: false,
-    badge: true,
-    carPlay: false,
-    criticalAlert: false,
-    provisional: false,
-    sound: true,
-  );
+  final NotificationSettings settings = await messaging.requestPermission();
 
   print('User granted permission: ${settings.authorizationStatus}');
 
