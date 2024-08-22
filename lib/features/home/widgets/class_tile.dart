@@ -64,6 +64,7 @@ class _ClassTileState extends ConsumerState<ClassTile> {
       },
       child: Container(
         padding: const EdgeInsets.all(16.0),
+        width: MediaQuery.of(context).size.width - 48,
         decoration: BoxDecoration(
           color: Theme.of(context).scaffoldBackgroundColor,
           border: Border.all(color: containerColor),

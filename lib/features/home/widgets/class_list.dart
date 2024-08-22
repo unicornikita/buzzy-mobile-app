@@ -24,15 +24,7 @@ class _ClassListState extends ConsumerState<ClassList> {
         .dailySchedules![selectedDailyScheduleIndex];
 
     return Expanded(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Expanded(
-            child: _buildClassList(dailySchedule),
-          ),
-        ],
-      ),
+      child: _buildClassList(dailySchedule),
     );
   }
 
