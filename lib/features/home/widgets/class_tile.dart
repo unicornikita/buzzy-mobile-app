@@ -48,7 +48,9 @@ class _ClassTileState extends ConsumerState<ClassTile> {
 
       className = classNameValue;
 
-      if (classNameValue.isNotEmpty || classNameValue == 'PROSTO') {
+      if (classNameValue.isNotEmpty &&
+          classNameValue != 'PROSTO' &&
+          classNameValue != 'Počitnice') {
         classDetails = '${classSubject.professor}, ${classSubject.classroom}';
       }
     }

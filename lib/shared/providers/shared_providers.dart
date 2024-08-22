@@ -53,7 +53,8 @@ class WeeklyScheduleList extends _$WeeklyScheduleList {
     // if today's date is different from the last fetch date, clear cache and fetch again
     if (currentDate != lastFetchDate &&
         DateTime.now().weekday != 6 &&
-        DateTime.now().weekday != 7) {
+        DateTime.now().weekday != 7 &&
+        classID != null) {
       await sharedPrefs.setString('lastFetchDate', currentDate);
       await weeklyScheduleRepository.deleteWeeklySchedule(classID!);
     }

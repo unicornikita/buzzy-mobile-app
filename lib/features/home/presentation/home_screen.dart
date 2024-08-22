@@ -27,11 +27,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     // Adding a listener to classUrlProvider for immediate subscription to the Firebase topic
     ref.listen(classUrlProvider,
         (AsyncValue<String?>? previous, AsyncValue<String?>? next) async {
-      if (next != null && next.value!.isNotEmpty) {
+      if (next != null && next.value != null && next.value!.isNotEmpty) {
         final String? url = next.value;
         subscribeToFirebaseTopic(url!);
       }
     });
+
     AsyncValue<WeeklySchedule?> schedule =
         ref.watch(weeklyScheduleListProvider);
     return Scaffold(

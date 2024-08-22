@@ -65,9 +65,15 @@ class _ClassListState extends ConsumerState<ClassList> {
 
   // Helper method to check if a class is the next one (starting soon)
   bool _isNextClass(DateTime classStartTime) {
-    final DateTime now = DateTime.now();
-    return classStartTime.isAfter(now) &&
-        classStartTime.isBefore(now.add(const Duration(minutes: 60)));
+    final int selectedDay = ref.watch(selectedDayProvider);
+    if (selectedDay == 0) {
+      final DateTime now = DateTime.now();
+      final DateTime startTime = DateTime(now.year, now.month, now.day,
+          classStartTime.hour, classStartTime.minute);
+      return startTime.isAfter(now) &&
+          startTime.isBefore(now.add(const Duration(minutes: 60)));
+    }
+    return false;
   }
 
   // Helper method to build a list of sub-classes if any are present
@@ -88,7 +94,7 @@ class _ClassListState extends ConsumerState<ClassList> {
           );
         },
         separatorBuilder: (BuildContext context, int index) {
-          return const SizedBox(width: 16);
+          return const SizedBox(width: 8);
         },
       ),
     );
