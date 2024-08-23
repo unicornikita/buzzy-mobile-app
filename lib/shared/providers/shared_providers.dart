@@ -56,7 +56,7 @@ class WeeklyScheduleList extends _$WeeklyScheduleList {
         DateTime.now().weekday != 7 &&
         classID != null) {
       await sharedPrefs.setString('lastFetchDate', currentDate);
-      await weeklyScheduleRepository.deleteWeeklySchedule(classID!);
+      await weeklyScheduleRepository.deleteWeeklySchedule(classID);
     }
     // attempt to fetch the weekly schedule from the local database
     WeeklySchedule? weeklySchedule =
