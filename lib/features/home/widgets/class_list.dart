@@ -62,9 +62,14 @@ class _ClassListState extends ConsumerState<ClassList> {
       final DateTime now = DateTime.now();
       final DateTime startTime = DateTime(now.year, now.month, now.day,
           classStartTime.hour, classStartTime.minute);
-      return startTime.isAfter(now) &&
-          startTime.isBefore(now.add(const Duration(minutes: 60)));
+      // Check if this class is the first one within the next 60 minutes
+      if (startTime.isAfter(now) &&
+          startTime.isBefore(now.add(const Duration(minutes: 60)))) {
+        // Check if the current classStartTime is the next class
+        return true;
+      }
     }
+
     return false;
   }
 
